@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.sbs.cuni.dto.Article;
 import com.sbs.cuni.dto.ArticleReply;
 import com.sbs.cuni.dto.Board;
+import com.sbs.cuni.dto.Member;
 import com.sbs.cuni.service.ArticleService;
 
 import lombok.extern.slf4j.Slf4j;
@@ -80,16 +81,26 @@ public class ArticleController {
 	}
 
 	@RequestMapping("/article/add")
-	public String showAdd(long boardId, Model model) {
+	public String showAdd(long boardId, Model model, HttpServletRequest request) {
 		Board board = articleService.getBoard(boardId);
 
 		model.addAttribute("board", board);
+
+		Member loginedMember = (Member) request.getAttribute("loginedMember");
+
+		if (boardId == 1 && loginedMember.getPermissionLevel() != 1) {
+			model.addAttribute("alertMsg", "권한이 없습니다.");
+			model.addAttribute("historyBack", true);
+
+			return "common/redirect";
+		}
 
 		return "article/add";
 	}
 
 	@RequestMapping("/article/doAdd")
-	public String doAdd(Model model, @RequestParam Map<String, Object> param, HttpSession session, long boardId) {
+	public String doAdd(Model model, @RequestParam Map<String, Object> param, HttpSession session, long boardId,
+			HttpServletRequest request) {
 		param.put("memberId", session.getAttribute("loginedMemberId"));
 		long newId = articleService.add(param);
 
@@ -155,8 +166,29 @@ public class ArticleController {
 	}
 
 	@RequestMapping("/article/doDelete")
-	public String doDelete(Model model, @RequestParam Map<String, Object> param, HttpSession session, long id, long boardId) {
+	public String doDelete(Model model, @RequestParam Map<String, Object> param, HttpServletRequest request, long id,
+			long boardId) {
 		param.put("id", id);
+		// 관리자인지 체크
+		// 작성자인지 체크
+
+		boolean hasAPermmision = true;
+
+		Member loginedMember = (Member) request.getAttribute("loginedMember");
+
+		Article article = articleService.getOne(Maps.of("id", id));
+		boolean isWriter = article.getMemberId() == loginedMember.getId();
+
+		if (loginedMember.getPermissionLevel() == 0 && isWriter == false) {
+			hasAPermmision = false;
+		}
+
+		if (hasAPermmision == false) {
+			model.addAttribute("historyBack", true);
+			model.addAttribute("alertMsg", "권한이 없습니다.");
+
+			return "common/redirect";
+		}
 
 		Map<String, Object> deleteRs = articleService.delete(param);
 
@@ -226,14 +258,32 @@ public class ArticleController {
 			e.printStackTrace();
 		}
 
+		
+		Map<String, Object> rs = new HashMap<>();
+		String msg = "";
+		String resultCode = "";
+
+		long loginedMemberId = (long) session.getAttribute("loginedMemberId");
+
+		ArticleReply ar = articleService.getReply(param);
+
+		if ( loginedMemberId != ar.getMemberId() ) {
+			msg = "댓글을 수정할 권한이 없습니다.";
+			resultCode = "F-5";
+
+			rs = Maps.of("msg", msg, "resultCode", resultCode);
+
+			return rs;
+		}
+		
 		param.put("id", id);
 
 		Map<String, Object> updateRs = articleService.updateReply(param);
 
-		String msg = (String) updateRs.get("msg");
-		String resultCode = (String) updateRs.get("resultCode");
+		msg = (String) updateRs.get("msg");
+		resultCode = (String) updateRs.get("resultCode");
 
-		Map<String, Object> rs = Maps.of("msg", msg, "resultCode", resultCode);
+		rs = Maps.of("msg", msg, "resultCode", resultCode);
 
 		return rs;
 	}

@@ -28,6 +28,25 @@
 			alert("이메일 형식에 맞지 않습니다.");
 			return false;
 		}
+		form.beforePw.value = form.beforePw.value.trim();
+		if ( form.beforePw.value.length == 0 ) {
+			alert('기존 비밀번호를 입력하세요.');
+			return false;
+		}
+		form.afterPw.value = form.afterPw.value.trim();
+		if ( form.afterPw.value.length == 0 ) {
+			alert('변경할 비밀번호를 입력하세요.');
+			return false;
+		}
+		form.checkPw.value = form.checkPw.value.trim();
+		if ( form.checkPw.value.length == 0 ) {
+			alert('변경할 비밀번호 확인란을 입력하세요.');
+			return false;
+		}
+		if ( form.checkPw.value != form.afterPw.value ) {
+			alert('변경할 비밀번호가 일치하지 않습니다.');
+			return false;
+		}
 
 		form.submit();
 	}
@@ -48,6 +67,18 @@
 				<tr>
 					<th>이메일</th>
 					<td><input type="text" name="email" value="${member.email}"></td>
+				</tr>
+								<tr>
+					<th>기존 비밀번호</th>
+					<td><input type="password" name="beforePw"></td>
+				</tr>
+				<tr>
+					<th>변경할 비밀번호</th>
+					<td><input type="password" name="afterPw"></td>
+				</tr>
+				<tr>
+					<th>비밀번호 확인</th>
+					<td><input type="password" name="checkPw"></td>
 				</tr>
 				<tr>
 					<th>수정</th>

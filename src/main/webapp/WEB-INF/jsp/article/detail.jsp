@@ -7,6 +7,7 @@
 <%@ include file="../part/head.jspf"%>
 <script>
 	var articleId = parseInt('${param.id}');
+	var loginedMemberId = ${loginedMemberId};
 </script>
 
 <script>
@@ -23,13 +24,29 @@
 	}
 </script>
 
+<script>
+	var loginMemberPermissionLevel = ${loginedMember.permissionLevel > 0 ? loginedMember.permissionLevel : 0};
+</script>
+
 <style>
+.deletable-item {
+	display: none;
+}
+
+.deletable .deletable-item {
+	display: block;
+}
+
 .editable-item {
 	display: none;
 }
 
 .editable .editable-item {
 	display: block;
+}
+
+.editable a.editable-item,.deletable a.deletable-item  {
+	display: inline-block;
 }
 
 .article-replies-list tr .edit-mode-visible {

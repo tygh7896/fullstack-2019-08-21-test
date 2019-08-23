@@ -43,4 +43,5 @@ public interface ArticleDao {
 	public void deleteReplies(long articleId);
 
 	public void deleteReply(Map<String, Object> param);
+	
 }

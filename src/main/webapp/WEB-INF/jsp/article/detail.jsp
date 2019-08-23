@@ -78,6 +78,10 @@
 				<td><c:out value="${article.regDate}" /></td>
 			</tr>
 			<tr>
+				<th>조회수</th>
+				<td>${article.hit}</td>
+			</tr>
+			<tr>
 				<th>제목</th>
 				<td><c:out value="${article.title}" escapeXml="true" /></td>
 			</tr>

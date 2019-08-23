@@ -51,8 +51,10 @@ public class ArticleController {
 
 	// 게시물 상세페이지
 	@RequestMapping("article/detail")
-	public String showDetail(@RequestParam(value = "id", defaultValue = "0") int id, Model model, long boardId) {
+	public String showDetail(@RequestParam(value = "id", defaultValue = "0") long id, Model model, long boardId) {
 		Board board = articleService.getBoard(boardId);
+		
+		articleService.hitUp(id);
 
 		model.addAttribute("board", board);
 

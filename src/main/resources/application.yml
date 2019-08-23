@@ -1,13 +1,7 @@
-custom:
-  logoText: CUNI
-  uploadDir: C:/work/ksh/uploads
-  emailSender: no-reply@noreply.com
-  emailSenderName: CUNI Master
-mybatis:
-  type-aliases-package: com.sbs.cuni.dto
-server:
-  port: 8083
+# 기본 설정
 spring:
+  profiles:
+    active: local # 기본적으로 local이 선택된다는 뜻
   mvc:
     view:
       prefix: /WEB-INF/jsp/ 
@@ -34,3 +28,29 @@ spring:
           auth: true
           starttls:
             enable: true
+mybatis:
+  type-aliases-package: com.sbs.cuni.dto
+custom:
+  logoText: CUNI
+  uploadDir: C:/work/ksh/uploads
+  emailSender: no-reply@noreply.com
+  emailSenderName: CUNI Master
+
+---
+
+
+spring:
+  profiles: local
+server:
+  port: 8085
+
+---
+
+# 운영환경만의 설정
+spring:
+  profiles: production
+logging:
+  level:
+    root: info
+server:
+  port: 8084

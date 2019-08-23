@@ -37,4 +37,6 @@ public interface ArticleService {
 	public Map<String, Object> checkModifyPermmision(long id, long loginedMemberId);
 
 	public Board getBoard(long boardId);
+	
+	public void hitUp(long id);
 }

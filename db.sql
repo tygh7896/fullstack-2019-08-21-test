@@ -5,45 +5,46 @@ CREATE DATABASE `cuni`;
 USE `cuni`;
 
 CREATE TABLE `article` (
-  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `regDate` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `title` char(100) NOT NULL,
-  `body` text NOT NULL,
-  `memberId` int(10) UNSIGNED NOT NULL,
-  `boardId` int(10) UNSIGNED NOT NULL,
+  `id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `regDate` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `title` CHAR(100) NOT NULL,
+  `body` TEXT NOT NULL,
+  `hit` INT(100) UNSIGNED NOT NULL,
+  `memberId` INT(10) UNSIGNED NOT NULL,
+  `boardId` INT(10) UNSIGNED NOT NULL,
   PRIMARY KEY (`id`)
 );
 
 CREATE TABLE `articleReply` (
-  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `regDate` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `articleId` int(10) UNSIGNED NOT NULL,
-  `boardId` int(10) UNSIGNED NOT NULL,
-  `memberId` int(10) UNSIGNED NOT NULL,
-  `body` text NOT NULL,
+  `id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `regDate` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `articleId` INT(10) UNSIGNED NOT NULL,
+  `boardId` INT(10) UNSIGNED NOT NULL,
+  `memberId` INT(10) UNSIGNED NOT NULL,
+  `body` TEXT NOT NULL,
   PRIMARY KEY (`id`)
 );
 
 CREATE TABLE `board` (
-  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `regDate` datetime NOT NULL,
-  `name` char(100) NOT NULL,
+  `id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `regDate` DATETIME NOT NULL,
+  `name` CHAR(100) NOT NULL,
   PRIMARY KEY (`id`)
 );
 
-insert  into `board`(`id`,`regDate`,`name`) values 
+INSERT  INTO `board`(`id`,`regDate`,`name`) VALUES 
 (1,'2019-05-27 22:54:25','공지사항'),
 (2,'2019-05-27 22:54:36','자유게시판');
 
 CREATE TABLE `member` (
-  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `regDate` datetime NOT NULL,
-  `loginId` char(100) NOT NULL,
-  `loginPw` char(100) NOT NULL,
-  `name` char(100) NOT NULL,
-  `emailAuthKey` char(100) NOT NULL,
-  `emailAuthStatus` tinyint(1) UNSIGNED NOT NULL DEFAULT '0',
-  `delStatus` tinyint(1) UNSIGNED NOT NULL DEFAULT '0',
+  `id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `regDate` DATETIME NOT NULL,
+  `loginId` CHAR(100) NOT NULL,
+  `loginPw` CHAR(100) NOT NULL,
+  `name` CHAR(100) NOT NULL,
+  `emailAuthKey` CHAR(100) NOT NULL,
+  `emailAuthStatus` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0',
+  `delStatus` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0',
   `email` char(100) NOT NULL,
   `permissionLevel` int(10) UNSIGNED NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
